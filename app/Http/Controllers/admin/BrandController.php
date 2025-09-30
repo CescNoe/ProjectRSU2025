@@ -48,7 +48,7 @@ class BrandController extends Controller
     public function edit(string $id)
     {
         $brand = Brand::find($id);
-        return view('admin.brands.edit', compact('brandt'));    
+        return view('admin.brands.edit', compact('brand'));
     }
 
     /**
@@ -56,9 +56,16 @@ class BrandController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string',
+        ]);
+
         $brand = Brand::find($id);
-        $brand->update($request->all());
-        return redirect()->route('admin.brands.index') -> with('action', 'Marca actualizada');
+        $brand->update($request->only(['name', 'description']));
+        
+        return redirect()->route('admin.brands.index')
+                        ->with('action', 'Marca actualizada correctamente');
     }
 
     /**
@@ -68,6 +75,8 @@ class BrandController extends Controller
     {
         $brand = Brand::find($id);
         $brand->delete();
-        return redirect()->route('admin.brands.index') -> with('action', 'Marca eliminada');
+        
+        return redirect()->route('admin.brands.index')
+                        ->with('action', 'Marca eliminada correctamente');
     }
 }

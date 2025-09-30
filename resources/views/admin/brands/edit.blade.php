@@ -9,11 +9,13 @@
 @section('content')
     <div class="card">
         <div class="card-body">
-            {!! Form::model($brand, ['route' => ['admin.brands.update', $brand], 'method' => 'PUT']) !!}
-            @include('admin.brands.template.form')
-            <button type="submit" class="btn btn-success"><i class="fas fa-save"></i>Actualizar</button>
-            <a href="{{ route('admin.brands.index') }}" class="btn btn-danger">Retornar</a>
-            {!! Form::close() !!}
+            <form action="{{ route('admin.brands.update', $brand) }}" method="POST">
+                @csrf
+                @method('PUT')
+                @include('admin.brands.template.form')
+                <button type="submit" class="btn btn-success"><i class="fas fa-save"></i> Actualizar</button>
+                <a href="{{ route('admin.brands.index') }}" class="btn btn-danger">Retornar</a>
+            </form>
         </div>
     </div>
 @endsection
