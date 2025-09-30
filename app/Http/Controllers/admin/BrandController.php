@@ -4,6 +4,7 @@ namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\Brand;
 
 class BrandController extends Controller
 {
@@ -11,8 +12,9 @@ class BrandController extends Controller
      * Display a listing of the resource.
      */
     public function index()
-    {
-        return view('admin.brands.index');
+    {   
+        $brands = Brand::all();
+        return view('admin.brands.index', compact('brands'));
     }
 
     /**
@@ -20,7 +22,7 @@ class BrandController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.brands.create');
     }
 
     /**
@@ -28,7 +30,8 @@ class BrandController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        Brand::create($request->all());
+        return redirect()->route('admin.brands.index') -> with('action', 'Marca registrada');
     }
 
     /**
@@ -44,7 +47,8 @@ class BrandController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $brand = Brand::find($id);
+        return view('admin.brands.edit', compact('brandt'));    
     }
 
     /**
@@ -52,7 +56,9 @@ class BrandController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $brand = Brand::find($id);
+        $brand->update($request->all());
+        return redirect()->route('admin.brands.index') -> with('action', 'Marca actualizada');
     }
 
     /**
@@ -60,6 +66,8 @@ class BrandController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $brand = Brand::find($id);
+        $brand->delete();
+        return redirect()->route('admin.brands.index') -> with('action', 'Marca eliminada');
     }
 }
